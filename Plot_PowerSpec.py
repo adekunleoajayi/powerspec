@@ -6,12 +6,8 @@ from matplotlib.colors import LogNorm
 from netCDF4 import Dataset
 from scipy import stats
 
-def kstep2km(k):
-    """Convert wavenumbers (cycle/km) to lenghscales (km)"""
-    return 1./k
-
 def km2kstep(l):
-    """Convert lenghscales (km) to wavenumbers (cycle/km)"""
+    """Convert lenghscales (m) to wavenumbers (cycle/m)"""
     return 1./l
 
 def estimate_slope(pspec,kstep):
@@ -19,7 +15,6 @@ def estimate_slope(pspec,kstep):
     return power
 
 def prepare_spectrum_plot(pspec,kstep,klmin,klmax):
-    m2km = 1.E3   
     _kstep = kstep
     # plotting lines for estimating slopes
     kstepmin = km2kstep(klmin)
@@ -32,7 +27,6 @@ def prepare_spectrum_plot(pspec,kstep,klmin,klmax):
     mkstp = kstep_r[pspec_r == mpspc][0]
     toplt = 10 * mpspc *(kstep_r/kstep_r[0])**(kval) #log to normal value
     return kstr,_kstep,toplt,kstep_r,pspec_r
-
 
 def plot_spec(kstr,_kstep,toplt,kstep_r,pspec_r,pspec):
     y_min = 10 ** np.floor(np.log10(pspec.min())-1)
@@ -49,26 +43,21 @@ def plot_spec(kstr,_kstep,toplt,kstep_r,pspec_r,pspec):
     plt.text(xpos,ypos,kstr,fontsize=9)
     plt.xscale('log')
     plt.yscale('log')
-    plt.xlabel('cycle/km',fontsize=12)
-    #plt.xlim(1e-5*rad2cyc, 1e-2*rad2cyc)
+    plt.xlabel('cycle/m',fontsize=12)
     plt.ylim(y_min, y_max)
     plt.legend(fontsize=10)
     plt.grid('on')
-    #plt.show()
 
-
-def plot_spectrum(p_ssh,kstep,klmin,klmax):
-    kstr,_kstep,toplt,kstep_r,pspec_r = prepare_spectrum_plot(p_ssh,kstep,klmin,klmax)
-    plot_spec(kstr,_kstep,toplt,kstep_r,pspec_r,p_ssh)
-
+def plot_spectrum(pspec,kstep,klmin,klmax):
+    kstr,_kstep,toplt,kstep_r,pspec_r = prepare_spectrum_plot(pspec,kstep,klmin,klmax)
+    plot_spec(kstr,_kstep,toplt,kstep_r,pspec_r,pspec)
 
 def get_scale(kstep,pspec):
     psd_max = pspec.argmax()
     psd_max_kstep = kstep[psd_max]
     wavelength = 1.0/psd_max_kstep
-    scale = wavelength
+    scale = wavelength/1E3
     return scale
-
 
 def get_slope(kstep,pspec,klmin,klmax):
     _kstep = kstep

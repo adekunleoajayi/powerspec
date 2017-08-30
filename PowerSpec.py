@@ -141,19 +141,32 @@ def get_spec_1D(kh,kspec,spec_2D):
     return spec_1D
 
 
-def get_spectrum(data_reg,x_reg,y_reg,window='tukey',detrend='zonal'):
+def get_spectrum(data_reg,x_reg,y_reg,window='tukey',detrend='both'):
     """ 
         data_reg : Interpolated data.
         x_reg and y_reg : interpolate coordinates in meters.
         window : None , 'han' (hanning) or 'tukey' (tappered consine window with /apha = 0.5).
-        detrend : if true detrend the 2D data along both axes.
+        detrend : 
+            if "both" : detrend the 2D data along both axes.
+            if "zonal" : detrend the data in the zonal direction only
+            if "RemoveMean" : Remove only the mean of the data
+            if 'RmeanDtrend' : Remove the mean then detrend the data in both direction
+            if None : use the raw data
     """
     Nj,Ni = data_reg.shape
     # detrend
-    if detrend == 'both':
+    if detrend is None :
+        data_reg = data_reg
+    elif detrend == 'both':
         data_reg = signal.detrend(data_reg,axis=0,type='linear')
         data_reg = signal.detrend(data_reg,axis=1,type='linear')
     elif detrend == 'zonal':
+        data_reg = signal.detrend(data_reg,axis=1,type='linear')
+    elif detrend == 'RemoveMean':
+        data_reg = data_reg - data_reg.mean()
+    elif detrend == 'RmeanDtrend':
+        data_reg = data_reg - data_reg.mean()
+        data_reg = signal.detrend(data_reg,axis=0,type='linear')
         data_reg = signal.detrend(data_reg,axis=1,type='linear')
     
     # obtain dx and dy
