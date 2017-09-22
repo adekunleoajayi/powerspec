@@ -1,24 +1,31 @@
-## modules
-import os, user, sys
+############################################################################
+# This scripts estimate wavenumber spectrum of two dimensional oceanic dataset such as SSH, vorticity. Prior to
+# spectrum estimate, the dataset is interpolated and any NaN value is replaced with interpolated value. A
+# tapering is applied to the dataset, afterwhich, the dataset is detrend in both direction. The 2D spectral
+# obtained after FFT is radially averaged to a 1D spectral.
+#
+# Author : Adekunle Ajayi and Julien Lesommer
+# Affilation : Institut des Geosciences de l'Environnement (IGE),
+#              Universite Grenoble Alpes, France.
+# Email : adekunle.ajayi@univ-grenoble-alpes.fr, julien.lesommer@univ-grenoble-alpes.fr
+############################################################################
+
+
+## load modules
 import numpy as np
 import pandas as pd
 import numpy.fft as fft
-import matplotlib
 import matplotlib.pyplot as plt
-import numpy.ma as ma
-from netCDF4 import Dataset 
-import seaborn as sns
+from netCDF4 import Dataset
 import scipy.signal as signal
 from scipy.interpolate import interp1d
-sys.path.insert(0, "/Users/adekunle/lib/python/regular/")
-import OpenDataSet as op
 
-earthrad = 6371229     # mean earth radius (m)
-deg2rad = np.pi / 180.
 
 def e1e2(navlon,navlat):
     """Compute scale factors from navlon,navlat.
         """
+    earthrad = 6371229     # mean earth radius (m)
+    deg2rad = np.pi / 180.
     lam = navlon
     phi = navlat
     djlam,dilam = np.gradient(lam)
@@ -30,6 +37,8 @@ def e1e2(navlon,navlat):
 
 def interpolate(data,navlon,navlat,interp=None):
     """
+        interpolate(data,navlon,navlat,interp=None)
+        
         Perform a spatial interpolation if required; return x_reg,y_reg,data_reg.
         data : raw data
         nalon : longitude
@@ -54,6 +63,12 @@ def interpolate(data,navlon,navlat,interp=None):
 
 
 def isdata_contain_nan(data):
+    ''' 
+        isdata_contain_nan(data)
+        
+        This function check if a data contains any NaN value
+        If yes, it replaces the NaN values with an interpolated value using the fill_nan function.
+    '''
     i_mask = data.mask
     arr = np.array(data)
     arr[i_mask] = np.nan
@@ -65,6 +80,7 @@ def isdata_contain_nan(data):
         return data
 
 def fill_nan(data):
+    '''replaces a NaN value in a dataset with an interpolated one'''
     # - Reshape to 1D array
     i,j = data.shape
     _1D_arr = data.reshape(i*j,1)
@@ -106,8 +122,8 @@ def scaled_han(Ni,Nj):
     return wdw
 
 
-def wavenumber_vector(Ni,Nj,x_reg,y_reg,dx,dy):
-    ''' Compute a wavenumber vector '''
+def wavenumber_vector(Ni,Nj,dx,dy):
+    ''' Compute a wavenumber vector  '''
     kx = np.fft.fftshift(np.fft.fftfreq(Ni,dx)) # two sided
     ky = np.fft.fftshift(np.fft.fftfreq(Nj,dy))
     
@@ -143,6 +159,8 @@ def get_spec_1D(kh,kspec,spec_2D):
 
 def get_spectrum(data_reg,x_reg,y_reg,window='tukey',detrend='both'):
     """ 
+        get_spectrum(data_reg,x_reg,y_reg,window='tukey',detrend='both')
+        
         data_reg : Interpolated data.
         x_reg and y_reg : interpolate coordinates in meters.
         window : None , 'han' (hanning) or 'tukey' (tappered consine window with /apha = 0.5).
@@ -158,13 +176,17 @@ def get_spectrum(data_reg,x_reg,y_reg,window='tukey',detrend='both'):
     if detrend is None :
         data_reg = data_reg
     elif detrend == 'both':
+        # - detrend data in both direction
         data_reg = signal.detrend(data_reg,axis=0,type='linear')
         data_reg = signal.detrend(data_reg,axis=1,type='linear')
     elif detrend == 'zonal':
+        # - detrend data in the zonal direction
         data_reg = signal.detrend(data_reg,axis=1,type='linear')
     elif detrend == 'RemoveMean':
+        # - remove mean from the data
         data_reg = data_reg - data_reg.mean()
     elif detrend == 'RmeanDtrend':
+        # - remove mean and detrend data in both direction
         data_reg = data_reg - data_reg.mean()
         data_reg = signal.detrend(data_reg,axis=0,type='linear')
         data_reg = signal.detrend(data_reg,axis=1,type='linear')
@@ -175,7 +197,7 @@ def get_spectrum(data_reg,x_reg,y_reg,window='tukey',detrend='both'):
     dy=np.int(np.ceil(y1dreg[1]-y1dreg[0]))
 
     # wavenumber vector
-    kspec,kh = wavenumber_vector(Ni,Nj,x_reg,y_reg,dx,dy)
+    kspec,kh = wavenumber_vector(Ni,Nj,dx,dy)
     
     # Apply windowing
     if window is None:
@@ -194,6 +216,4 @@ def get_spectrum(data_reg,x_reg,y_reg,window='tukey',detrend='both'):
     spec_1D = get_spec_1D(kh,kspec,spec_2D)
     pspec = spec_1D
     return kspec,pspec
-
-
 
