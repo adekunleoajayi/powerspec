@@ -4,9 +4,8 @@ This scripts estimate wavenumber spectrum of two dimensional oceanic dataset suc
 Check the "AJ_2017_09_22_Example_on_how_to_use_PowerSpec" notebook for useage.
 
 
-############################################################################
-Author : Adekunle Ajayi and Julien Lesommer
-Affilation : Institut des Geosciences de l'Environnement (IGE),
-             Universite Grenoble Alpes, France.
-Email : adekunle.ajayi@univ-grenoble-alpes.fr, julien.lesommer@univ-grenoble-alpes.fr
-############################################################################
+############################################################################</br>
+Author : Adekunle Ajayi and Julien Lesommer</br>
+Affilation : Institut des Geosciences de l'Environnement (IGE), Universite Grenoble Alpes, France.</br>
+Email : adekunle.ajayi@univ-grenoble-alpes.fr, julien.lesommer@univ-grenoble-alpes.fr </br>
+############################################################################ </br>
