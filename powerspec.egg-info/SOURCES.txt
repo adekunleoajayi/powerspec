@@ -1,0 +1,9 @@
+README.md
+setup.py
+powerspec/__init__.py
+powerspec/powerspec.py
+powerspec.egg-info/PKG-INFO
+powerspec.egg-info/SOURCES.txt
+powerspec.egg-info/dependency_links.txt
+powerspec.egg-info/not-zip-safe
+powerspec.egg-info/top_level.txt
