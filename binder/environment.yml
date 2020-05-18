@@ -3,6 +3,9 @@ dependencies:
   - python=3.6
   - xarray
   - numpy
+  - netCDF4
+  - scipy
+  - pandas
   - matplotlib
   - pip
   - pip:
