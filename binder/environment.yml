@@ -1,0 +1,9 @@
+name: powerspec
+dependencies:
+  - python=3.6
+  - xarray
+  - numpy
+  - matplotlib
+  - pip
+  - pip:
+    - powerspec
