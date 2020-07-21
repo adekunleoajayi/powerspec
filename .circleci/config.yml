@@ -1,4 +1,6 @@
-version: 2
+machine:
+    python:
+        version: 3.7.5
 jobs:
   build:
     working_directory: ~/powerspec/test/
