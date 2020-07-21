@@ -1,8 +1,10 @@
-version: 2
+machine:
+    python:
+        version: 3.7.5
 jobs:
   build:
-    docker:
-      - image: circleci/python:3.7.5
+#    docker:
+#      - image: circleci/python:3.7.5
     steps:
       - checkout
       - restore_cache:
