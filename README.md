@@ -5,7 +5,7 @@
 [![Binder](https://binder.pangeo.io/badge_logo.svg)](https://binder.pangeo.io/v2/gh/adeajayi-kunle/powerspec/master)
 
 
-powerspec is a Python package for estimating wavenumber spectral density, kinetic energy spectral flux and spectral coherence of two-dimensional oceanic dataset such as SSH, vorticity.
+powerspec is a python package for estimating wavenumber spectral density, kinetic energy spectral flux and spectral coherence of two-dimensional oceanic dataset such as SSH, vorticity.
 
 ### Installation 
 

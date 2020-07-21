@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 version: 2.1
 
 orbs:
@@ -19,3 +20,29 @@ workflows:
   main:
     jobs:
       - build-and-test
+=======
+version: 2
+docker:
+  - image: circleci/python:3.7.5
+jobs:
+  build:
+    steps:
+      - checkout
+      - restore_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+      - run:
+          name: Install python libraries
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+      - save_cache:
+          key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+          paths:
+          - "venv"
+      - run:
+          name: Running tests
+          command: |
+            cd ~/powerspec/test/
+            python3 -m unittest discover
+>>>>>>> 326dd5ed423101ae2c3d511dd8b7151702e8dfef
