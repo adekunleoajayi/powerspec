@@ -1,7 +1,6 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/powerspec/test/
     docker:
       - image: circleci/python:3.7.5
     steps:
