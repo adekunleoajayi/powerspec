@@ -20,5 +20,5 @@ jobs:
       - run:
           name: Running tests
           command: |
-            cd ~/powerspec/test/
+            cd ~/powerspec/powerspec/test/
             python3 -m unittest discover
