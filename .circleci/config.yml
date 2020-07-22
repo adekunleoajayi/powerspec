@@ -23,4 +23,4 @@ jobs:
           command: |
             . venv/bin/activate
             cd ~ test/
-            python -m unittest discover
+            python -m unittest test_powerspec.py
