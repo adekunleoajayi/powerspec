@@ -3,3 +3,4 @@ scipy >= 1.3.3
 numpy >= 1.15
 pandas >= 0.25
 xarray >= 0.14.0
+netcdf4
