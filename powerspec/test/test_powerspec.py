@@ -9,7 +9,7 @@ u = data.u
 v = data.v
 u15 = data.u15
 
-sys.path.insert(0,'/project/powerspec/')
+sys.path.insert(0,'../')
 import powerspec as ps
 
 
