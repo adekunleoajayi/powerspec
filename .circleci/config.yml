@@ -22,5 +22,5 @@ jobs:
           name: Running tests
           command: |
             . venv/bin/activate
-            cd ~ test/
-            python -m unittest test_powerspec.py
+#            cd ~ test/
+            python -m unittest test/test_powerspec.py
