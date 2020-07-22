@@ -22,5 +22,5 @@ jobs:
           name: Running tests
           command: |
             . venv/bin/activate
-            cd test/
+            cd ~ test/
             python -m unittest discover
