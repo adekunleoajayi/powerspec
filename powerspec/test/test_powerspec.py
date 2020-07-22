@@ -2,14 +2,16 @@ import unittest
 import sys
 import xarray as xr
 import numpy as np
-sys.path.insert(0,'/project/powerspec/')
-import powerspec as ps
 
 data = xr.open_dataset('./test_data.nc')
 ssh = data.ssh
 u = data.u
 v = data.v
 u15 = data.u15
+
+sys.path.insert(0,'/project/powerspec/')
+import powerspec as ps
+
 
 class TestPowerSpec(unittest.TestCase):
 
