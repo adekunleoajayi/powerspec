@@ -1,7 +1,7 @@
 import unittest
 import xarray as xr
 import numpy as np
-import powerspec as ps
+import .powerspec as ps
 
 data = xr.open_dataset('./test_data.nc')
 ssh = data.ssh
