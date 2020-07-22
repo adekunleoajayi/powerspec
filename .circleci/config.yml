@@ -22,4 +22,4 @@ jobs:
           name: Running tests
           command: |
             . venv/bin/activate
-            python -m unittest test/test_powerspec.py
+            python -m unittest discover
